@@ -14,7 +14,7 @@
 	export let getModels: Function;
 
 	// General
-	let themes = ['dark', 'light', 'oled-dark'];
+       let themes = ['dark', 'light', 'oled-dark', 'rose-pine dark', 'rose-pine-dawn light'];
 	let selectedTheme = 'system';
 
 	let languages: Awaited<ReturnType<typeof getLanguages>> = [];
@@ -152,16 +152,20 @@
 				metaThemeColor.setAttribute('content', systemTheme === 'light' ? '#ffffff' : '#171717');
 			} else {
 				console.log('Setting meta theme color: ' + _theme);
-				metaThemeColor.setAttribute(
-					'content',
-					_theme === 'dark'
-						? '#171717'
-						: _theme === 'oled-dark'
-							? '#000000'
-							: _theme === 'her'
-								? '#983724'
-								: '#ffffff'
-				);
+                                       metaThemeColor.setAttribute(
+                                               'content',
+                                               _theme === 'dark'
+                                                       ? '#171717'
+                                                       : _theme === 'oled-dark'
+                                                               ? '#000000'
+                                                               : _theme === 'her'
+                                                                       ? '#983724'
+                                                                       : _theme === 'rose-pine dark'
+                                                                               ? '#191724'
+                                                                               : _theme === 'rose-pine-dawn light'
+                                                                                       ? '#fffaf3'
+                                                                                       : '#ffffff'
+                                       );
 			}
 		}
 
@@ -205,9 +209,9 @@
 						<option value="dark">🌑 {$i18n.t('Dark')}</option>
 						<option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
 						<option value="light">☀️ {$i18n.t('Light')}</option>
-						<option value="her">🌷 Her</option>
-						<!-- <option value="rose-pine dark">🪻 {$i18n.t('Rosé Pine')}</option>
-						<option value="rose-pine-dawn light">🌷 {$i18n.t('Rosé Pine Dawn')}</option> -->
+                                               <option value="her">🌷 Her</option>
+                                               <option value="rose-pine dark">🪻 {$i18n.t('Rosé Pine')}</option>
+                                               <option value="rose-pine-dawn light">🌷 {$i18n.t('Rosé Pine Dawn')}</option>
 					</select>
 				</div>
 			</div>
