@@ -5,14 +5,15 @@
 	import { flyAndScale } from '$lib/utils/transitions';
 	import { goto } from '$app/navigation';
 	import ArchiveBox from '$lib/components/icons/ArchiveBox.svelte';
-	import { showSettings, activeUserIds, USAGE_POOL, mobile, showSidebar, user } from '$lib/stores';
-	import { fade, slide } from 'svelte/transition';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import { userSignOut } from '$lib/apis/auths';
-	import QuestionMarkCircle from '$lib/components/icons/QuestionMarkCircle.svelte';
-	import Map from '$lib/components/icons/Map.svelte';
-	import Keyboard from '$lib/components/icons/Keyboard.svelte';
-	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
+import { showSettings, activeUserIds, USAGE_POOL, mobile, showSidebar, user, theme } from '$lib/stores';
+import { fade, slide } from 'svelte/transition';
+import Tooltip from '$lib/components/common/Tooltip.svelte';
+import { userSignOut } from '$lib/apis/auths';
+import QuestionMarkCircle from '$lib/components/icons/QuestionMarkCircle.svelte';
+import Map from '$lib/components/icons/Map.svelte';
+import Keyboard from '$lib/components/icons/Keyboard.svelte';
+import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
+import { themes as availableThemes, changeTheme } from '$lib/utils/theme';
 
 	const i18n = getContext('i18n');
 
@@ -21,7 +22,18 @@
 	export let help = false;
 	export let className = 'max-w-[240px]';
 
-	let showShortcuts = false;
+let showShortcuts = false;
+
+let selectedTheme = 'system';
+
+onMount(() => {
+        selectedTheme = localStorage.theme ?? 'system';
+});
+
+const themeChangeHandler = () => {
+        theme.set(selectedTheme);
+        changeTheme(selectedTheme);
+};
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -96,9 +108,24 @@
 					<ArchiveBox className="size-5" strokeWidth="1.5" />
 				</div>
 				<div class=" self-center truncate">{$i18n.t('Archived Chats')}</div>
-			</button>
+                        </button>
 
-			{#if role === 'admin'}
+                        <div class="flex justify-between items-center py-1.5 px-3">
+                                <div class="text-xs font-medium">{$i18n.t('Theme')}</div>
+                                <select
+                                        class="dark:bg-gray-900 w-fit pr-8 rounded-sm py-1 px-2 text-xs bg-transparent outline-hidden text-right"
+                                        bind:value={selectedTheme}
+                                        on:change={themeChangeHandler}
+                                >
+                                        <option value="system">⚙️ {$i18n.t('System')}</option>
+                                        <option value="dark">🌑 {$i18n.t('Dark')}</option>
+                                        <option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
+                                        <option value="light">☀️ {$i18n.t('Light')}</option>
+                                        <option value="her">🌷 Her</option>
+                                </select>
+                        </div>
+
+                        {#if role === 'admin'}
 				<a
 					class="flex rounded-md py-1.5 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
 					href="/playground"
